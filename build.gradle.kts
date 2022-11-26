@@ -42,11 +42,32 @@ subprojects {
         apiVersion = "1.13"
     }
 
-    configurations.all {
-        exclude(group = "org.slf4j")
-        exclude(group = "com.google.code.gson")
-        exclude(group = "io.netty")
-        exclude(group = "jakarta.annotation")
-        exclude(group = "ch.qos.logback")
+    val excludeModules = listOf(
+        "org.slf4j",
+        "com.google.code.gson",
+        "io.netty",
+        "jakarta.annotation",
+        "ch.qos.logback",
+        "org.jetbrains.kotlinx",
+        "org.jetbrains.kotlin"
+    )
+    val allowedExcluded = listOf(
+        "org.jetbrains.kotlinx:kotlinx-coroutines-reactor"
+    )
+
+    tasks.shadowJar {
+        dependencies {
+            exclude {
+                val str = it.module.toString()
+                val index = str.lastIndexOf(":")
+                val path = str.substring(0, index)
+                println(path)
+
+                if (path in allowedExcluded)
+                    false
+                else
+                    it.moduleGroup in excludeModules
+            }
+        }
     }
 }
