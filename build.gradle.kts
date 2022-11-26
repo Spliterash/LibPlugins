@@ -10,6 +10,10 @@ allprojects {
     version = "1.0.0"
 }
 
+tasks.clean {
+    delete("jars")
+}
+
 subprojects {
     apply(plugin = "java")
     apply(plugin = "com.github.johnrengelman.shadow")
