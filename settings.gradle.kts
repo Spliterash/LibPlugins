@@ -5,5 +5,6 @@ include(
     "lettuce",
     "reactor",
     "redisson",
-    "kryo"
+    "kryo",
+    "caffeine"
 )

@@ -42,5 +42,7 @@ subprojects {
         exclude(group = "org.slf4j")
         exclude(group = "com.google.code.gson")
         exclude(group = "io.netty")
+        exclude(group = "jakarta.annotation")
+        exclude(group = "ch.qos.logback")
     }
 }
