@@ -3,7 +3,7 @@ import org.gradle.configurationcache.extensions.capitalized
 
 plugins {
     id("java")
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.github.johnrengelman.shadow")
     id("net.minecrell.plugin-yml.bukkit") version "0.5.2" apply false
 }
 allprojects {
@@ -46,35 +46,11 @@ subprojects {
 
         apiVersion = "1.13"
     }
+}
 
-    val excludeModules = listOf(
-        "org.slf4j",
-        "com.google.code.gson",
-        "io.netty",
-        "jakarta.annotation",
-        "ch.qos.logback",
-        "org.jetbrains.kotlinx",
-        "org.jetbrains.kotlin",
-        "io.projectreactor"
+configure(subprojects - project(":reactor")) {
+    configureRelocate(
+        LibPluginsGlobal.excludeModules + "io.projectreactor",
+        LibPluginsGlobal.allowedExcluded
     )
-    val allowedExcluded = listOf(
-        "org.jetbrains.kotlinx:kotlinx-coroutines-reactor",
-        "org.jetbrains.kotlinx:kotlinx-coroutines-reactive",
-    )
-
-    tasks.shadowJar {
-        dependencies {
-            exclude {
-                val str = it.module.toString()
-                val index = str.lastIndexOf(":")
-                val path = str.substring(0, index)
-                println(path)
-
-                if (path in allowedExcluded)
-                    false
-                else
-                    it.moduleGroup in excludeModules
-            }
-        }
-    }
 }
